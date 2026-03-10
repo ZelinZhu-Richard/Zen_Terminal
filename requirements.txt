@@ -1,0 +1,11 @@
+# Zen Terminal — Python dependencies
+# Install with: pip install -r requirements.txt
+
+# Global keyboard and mouse event listeners (cross-platform)
+pynput>=1.7.6
+
+# Audio playback (pygame.mixer handles MP3 via SDL_mixer)
+pygame>=2.5.0
+
+# Process utilities — used for optional process introspection / health checks
+psutil>=5.9.0

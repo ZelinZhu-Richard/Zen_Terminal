@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+    macOS launchd agent for Zen Terminal.
+
+    Install:
+        cp scripts/com.zenterminal.daemon.plist ~/Library/LaunchAgents/
+        # Edit the two EDIT_ME paths below first!
+        launchctl load -w ~/Library/LaunchAgents/com.zenterminal.daemon.plist
+
+    Uninstall:
+        launchctl unload -w ~/Library/LaunchAgents/com.zenterminal.daemon.plist
+        rm ~/Library/LaunchAgents/com.zenterminal.daemon.plist
+
+    Notes:
+    - This is a LaunchAgent (user session), NOT a LaunchDaemon.
+      LaunchAgents run inside the user's GUI session, which is required
+      for pynput and screen-locking to work.
+    - KeepAlive=true restarts the process automatically if it crashes.
+-->
+<plist version="1.0">
+<dict>
+
+    <key>Label</key>
+    <string>com.zenterminal.daemon</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <!-- EDIT_ME: absolute path to your virtual-environment Python binary -->
+        <string>/Users/EDIT_ME/dev/Zen_Terminal/.venv/bin/python</string>
+        <!-- EDIT_ME: absolute path to main.py -->
+        <string>/Users/EDIT_ME/dev/Zen_Terminal/zen_terminal/main.py</string>
+    </array>
+
+    <!-- Start automatically when the user logs in -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- Restart automatically on crash or clean exit -->
+    <key>KeepAlive</key>
+    <true/>
+
+    <!-- Redirect stdout/stderr to log files -->
+    <key>StandardOutPath</key>
+    <string>/Users/EDIT_ME/dev/Zen_Terminal/logs/launchd_stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/EDIT_ME/dev/Zen_Terminal/logs/launchd_stderr.log</string>
+
+    <!-- Run with a sane PATH so subprocesses (osascript, CGSession) resolve -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+
+    <!-- Throttle restart attempts to avoid a crash loop burning CPU -->
+    <key>ThrottleInterval</key>
+    <integer>10</integer>
+
+</dict>
+</plist>

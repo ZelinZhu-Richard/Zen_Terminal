@@ -1,0 +1,33 @@
+[Unit]
+Description=Zen Terminal Productivity Daemon
+# Start after the graphical session is available (needed for screen lock + pynput)
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+
+# EDIT: absolute path to your virtual-environment Python binary
+ExecStart=/home/EDIT_ME/dev/Zen_Terminal/.venv/bin/python \
+          /home/EDIT_ME/dev/Zen_Terminal/zen_terminal/main.py
+
+# Restart on any failure; wait 10 s before retrying
+Restart=on-failure
+RestartSec=10
+
+# Clean working directory
+WorkingDirectory=/home/EDIT_ME/dev/Zen_Terminal
+
+# Environment: ensure DISPLAY and DBUS are set so pynput and lock
+# commands reach the correct X/Wayland session.
+# These values are typically correct for a single-user desktop session.
+Environment=DISPLAY=:0
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus
+
+# Redirect logs (journald also captures stdout/stderr automatically)
+StandardOutput=append:/home/EDIT_ME/dev/Zen_Terminal/logs/systemd_stdout.log
+StandardError=append:/home/EDIT_ME/dev/Zen_Terminal/logs/systemd_stderr.log
+
+[Install]
+# Install as a user service: systemctl --user enable zenterminal
+WantedBy=graphical-session.target
