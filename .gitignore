@@ -48,4 +48,15 @@ scripts/com.zenterminal.daemon.patched.plist
 # ── pytest / coverage ─────────────────────────────────────────────────────
 .pytest_cache/
 .coverage
+.coverage.*
 htmlcov/
+
+# ── mypy ──────────────────────────────────────────────────────────────────
+.mypy_cache/
+
+# ── ruff ──────────────────────────────────────────────────────────────────
+.ruff_cache/
+
+# ── pyenv ─────────────────────────────────────────────────────────────────
+# .python-version is committed intentionally; ignore overrides
+# .python-version
